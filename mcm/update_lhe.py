@@ -31,23 +31,32 @@ if dotwiki:
 
 for ds in dslist:
   print "Working on dataset", ds.name
-  print "requesting ", ds.ngs
-  print "with before cross_section", ds.xsec,"+-", ds.xsec_err
-  print "with after cross_section", ds.xsec_match,"+-", ds.xsec_match_err
-  print "with efficiency", ds.eff,"+-", ds.eff_err
+  # print "requesting ", ds.ngs
+  # print "with before cross_section", ds.xsec,"+-", ds.xsec_err
+  # print "with after cross_section", ds.xsec_match,"+-", ds.xsec_match_err
+  # print "with efficiency", ds.eff,"+-", ds.eff_err
 
   req = mcm.getA('requests',ds.lhe_pid)
-  print "Got requests: ", req['prepid']
-
-  req['total_events'] = 1.0e6*ds.ngs/(ds.eff-ds.eff_err)*100.
-  req['fragment'] = string.replace(string.replace(req['fragment'], "9599bc7c1606c89a883506411f5189fbda5c61c3", github_slha),"GJets_","GJets_DR-0p4_")
-  req['notes'] = "Gamma+Jets with minimum distance between jet and photon = 0.4.\nCross-section before matching: "+'{0:.0f}'.format(ds.xsec)+" +- "+'{0:.0f}'.format(ds.xsec_err)+" pb"
-  req['dataset_name'] = ds.name
-  req['validation']['valid'] = True
-  req['validation']['nEvents'] = 30
-
+  # result = mcm.option_reset(ds.lhe_pid)
+  req['extension'] = 0
   answer = mcm.updateA('requests', req)
-  print "Updated."
+  if answer['results']:
+    print "Removed extension"
+  else:
+    print "Failed."
+    sys.exit("Failed to set extension to 0.")
+
+  # print "Got requests: ", req['prepid']
+
+  # req['total_events'] = 1.0e6*ds.ngs/(ds.eff-ds.eff_err)*100.
+  # req['fragment'] = string.replace(string.replace(req['fragment'], "9599bc7c1606c89a883506411f5189fbda5c61c3", github_slha),"GJets_","GJets_DR-0p4_")
+  # req['notes'] = "Gamma+Jets with minimum distance between jet and photon = 0.4.\nCross-section before matching: "+'{0:.0f}'.format(ds.xsec)+" +- "+'{0:.0f}'.format(ds.xsec_err)+" pb"
+  # req['dataset_name'] = ds.name
+  # req['validation']['valid'] = True
+  # req['validation']['nEvents'] = 30
+
+  # answer = mcm.updateA('requests', req)
+  # print "Updated."
 
   
   if dotwiki: 
