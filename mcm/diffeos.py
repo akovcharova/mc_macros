@@ -31,13 +31,14 @@ else:
 if not args.model:
   sys.exit("Need a model name")
 
-eospath = os.path.join(os.getcwd(), "tempeos")
+eospath = os.path.join(os.getcwd(), "tmpeos")
 if (not os.path.exists(eospath) or len(glob(eospath+"/*"))==0):
   print "You need to mount eos into directory tmpeos"
 
 miss = {}
 xtra = {}
 corr = {}
+zero = {}
 
 match = {}
 
@@ -46,6 +47,7 @@ for dbid in idlist:
   eos[dbid] = set([i.split("/").pop() for i in glob("tmpeos/cms/store/lhe/"+str(dbid)+"/*")])
 
 datasets = glob("tmpeos/cms/store/group/phys_susy/LHE/13TeV/"+args.model+"/*")
+
 for ds in datasets:
   print "Looking for dataset:", ds
   suspath = "tmpeos/cms/store/group/phys_susy/LHE/13TeV/"+args.model+"/"+ds.split("/").pop()+"/"
@@ -61,15 +63,18 @@ for ds in datasets:
     if not feos.isdisjoint(fsus):
       match[ds] = dbid      
       # ---  all files exist, are they the same size?
-      if feos==fsus:
-        for ifile in feos:
-          if os.path.getsize(suspath+ifile)!=os.path.getsize(eospath+ifile):
-            if (ds not in corr.keys()): corr[ds] = []
-            corr[ds].append(ifile)
+      for ifile in (feos & fsus):
+        if os.path.getsize(suspath+ifile)!=os.path.getsize(eospath+ifile):
+          if (ds not in corr.keys()): corr[ds] = []
+          corr[ds].append(ifile)
+        elif os.path.getsize(suspath+ifile)<0.01:
+          zero[ds].append(ifile)
       # --- files on eos, that are not in our folder
-      elif feos > fsus: xtra[ds] = feos-fsus
+      if len(feos-fsus)>0:
+        xtra[ds] = feos-fsus
       # --- files on eos, that are not in our folder
-      elif feos < fsus: miss[ds] = fsus-feos
+      if len(fsus-feos)>0: 
+        miss[ds] = fsus-feos
 
 # Summary
 for ds in datasets:
@@ -81,16 +86,20 @@ for ds in datasets:
     if (ds not in corr.keys()) and (ds not in miss.keys()) and (ds not in xtra.keys()):
       print "All files OK!."
     if (ds in corr.keys()):
-      print "Corrupted files (i.e. file size is different):"
+      print "-- Corrupted files (i.e. file size is different):"
       flist = [eospath+ifile for ifile in corr[ds]]
       for i in flist: print i
     if (ds in miss.keys()):
-      print "Missing files:"
+      print "-- Missing files:"
       flist = [suspath+ifile for ifile in miss[ds]]
       for i in flist: print i
     if (ds in xtra.keys()):
-      print "Extra files (on eos but not in our SUS directory):"
+      print "-- Extra files (on eos but not in our SUS directory):"
       flist = [eospath+ifile for ifile in xtra[ds]]
+      for i in flist: print i
+    if (ds in zero.keys()):
+      print "-- Files with size 0 on both eos and in our SUS directory:"
+      flist = [eospath+ifile for ifile in zero[ds]]
       for i in flist: print i
   else:
     print "Dataset not found on eos in the given MCDB id range or list."
