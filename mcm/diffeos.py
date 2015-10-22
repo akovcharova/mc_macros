@@ -77,16 +77,20 @@ for ds in datasets:
   if ds in match.keys():
     print "MCDB id =", match[ds]
     eospath = "tmpeos/cms/store/lhe/"+str(match[ds])+"/"
+    suspath = "tmpeos/cms/store/group/phys_susy/LHE/13TeV/"+args.model+"/"+ds.split("/").pop()+"/"
     if (ds not in corr.keys()) and (ds not in miss.keys()) and (ds not in xtra.keys()):
       print "All files OK!."
     if (ds in corr.keys()):
       print "Corrupted files (i.e. file size is different):"
-      pprint([eospath+ifile for ifile in corr[ds]])
+      flist = [eospath+ifile for ifile in corr[ds]]
+      for i in flist: print i
     if (ds in miss.keys()):
       print "Missing files:"
-      pprint([eospath+ifile for ifile in miss[ds]])
+      flist = [suspath+ifile for ifile in miss[ds]]
+      for i in flist: print i
     if (ds in xtra.keys()):
       print "Extra files (on eos but not in our SUS directory):"
-      pprint([eospath+ifile for ifile in xtra[ds]])
+      flist = [eospath+ifile for ifile in xtra[ds]]
+      for i in flist: print i
   else:
     print "Dataset not found on eos in the given MCDB id range or list."
