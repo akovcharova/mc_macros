@@ -11,17 +11,17 @@ from collections import namedtuple
 #------------------------------------------------
 #        Options
 #------------------------------------------------
-create_lhe_requests = True 
-update_fs_requests = False
+create_lhe_requests = False 
+update_fs_requests = True
 if (create_lhe_requests and update_fs_requests):
   sys.exit("ERROR: If the LHE request is being created now, then the FastSim request does not exist yet!")
 
 #------------------------------------------------
 #        Submitter info
 #------------------------------------------------
-author_email = "Jane.Doe@cern.ch"
-author_name = "Jane Doe"
-author_username = "jane"
+author_email = "Ana.Ovcharova@cern.ch"
+author_name = "Ana Ovcharova"
+author_username = "ana"
 
 #--------------------------------------------------------------
 # New pLHE requests will be created by cloning the request 
@@ -47,54 +47,69 @@ fs_size_event = 230. # size per sim event in kB
 #--------------------------------------------------------------
 #       Fill in per-dataset level info for each request
 #--------------------------------------------------------------
-dataset = namedtuple("dataset","name mcdbid nevt_lhe match_eff qcut")
+dataset = namedtuple("dataset","name mcdbid nevt_lhe match_eff qcut notes")
 
 dslist = [
-dataset(name = 'SMS-T1tttt_mGluino-700to775_mLSP-1to550_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-        mcdbid = 15358, 
-        nevt_lhe = 33600000, 
+dataset(name = "SMS-T2tt_mStop-100-125_mLSP-1to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15372, 
+        nevt_lhe = 20000000, 
         match_eff = 0.25, 
-        qcut = 57),
-dataset(name = 'SMS-T2tt_mStop-200-225_mLSP-1to125-25to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-        mcdbid = 15357, 
-        nevt_lhe = 28800000, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-150-175_mLSP-1to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15376, 
+        nevt_lhe = 36000000, 
         match_eff = 0.25, 
-        qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-250-275_mLSP-1to175-75to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 29000000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-300-325_mLSP-1to225-125to250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 29200000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-350-375_mLSP-1to275-175to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 29400000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-400-425_mLSP-1to325-225to350_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 29600000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-450-475_mLSP-1to375-275to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 29800000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-500-525-550_mLSP-1to425-325to450-1to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 45800000, 
-#         match_eff = 0.25, 
-#         qcut = 57)
-# dataset(name = 'SMS-T2tt_mStop-600-1000_mLSP-1to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
-#         mcdbid = 99999, 
-#         nevt_lhe = 32000000, 
-#         match_eff = 0.25, 
-#         qcut = 59)
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-200_mLSP-1to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15375, 
+        nevt_lhe = 24000000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-225_mLSP-25to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15374, 
+        nevt_lhe = 24000000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-250_mLSP-1to175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15370, 
+        nevt_lhe = 25000000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-275_mLSP-75to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15373, 
+        nevt_lhe = 16200000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-300to375_mLSP-1to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15378, 
+        nevt_lhe = 28900000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = "Full tag did not fit in N_chars limit: mStop-300-325-350-375_mLSP-1to225-125to250-1to275-175to300"),
+dataset(name = "SMS-T2tt_mStop-400to475_mLSP-1to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15371, 
+        nevt_lhe = 17000000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = "Full tag did not fit in N_chars limit: mStop-400-425-450-475_mLSP-1to325-225to350-1to375-275to400"),
+dataset(name = "SMS-T2tt_mStop-500-525-550_mLSP-1to425-325to450-1to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15377, 
+        nevt_lhe = 13400000, 
+        match_eff = 0.25, 
+        qcut = 57,
+        notes = ""),
+dataset(name = "SMS-T2tt_mStop-600-950_mLSP-1to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+        mcdbid = 15369, 
+        nevt_lhe = 32000000, 
+        match_eff = 0.25, 
+        qcut = 59,
+        notes = "")
 ]
 
 # ====================================================================================================================
@@ -176,7 +191,7 @@ ProductionFilterSequence = cms.Sequence(generator)\n"
 # -------------------------------------------------------------------
 
 print "Connecting to McM..."
-mcm = restful(dev=True) 
+mcm = restful(dev=False) 
 print "done."
 
 for ds in dslist:
@@ -195,6 +210,7 @@ for ds in dslist:
     ref_lhe_dict['generator_parameters'] = lhe_gen_params
     ref_lhe_dict['size_event'] = lhe_size_event
     ref_lhe_dict['time_event'] = lhe_time_event
+    ref_lhe_dict['notes'] = ds.notes
 
     # create the clone with the modified dictionary 
     new_lhe_request = mcm.clone(ref_lhe_dict['prepid'], ref_lhe_dict)
@@ -241,3 +257,10 @@ for ds in dslist:
     if answer['results']: print "%s Issued option_reset" % fs_dict['prepid']
     else: sys.exit("*** ERROR: %s: Option_reset failed with msg:%s" % (ds.name,answer['message']))
 
+    # start validation in lxbatch
+    prepid = fs_dict['prepid']
+    cmd = "wget https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/"+prepid+" && "
+    cmd +="mv "+prepid+" "+prepid+".sh && "
+    cmd +="chmod a+x "+prepid+".sh && "
+    cmd +="bsub -q 1nw -J j"+prepid[-3:len(prepid)+1]+" "+prepid+".sh"
+    os.system(cmd)
