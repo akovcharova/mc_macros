@@ -116,7 +116,7 @@ mccm_ticket = { 'prepid' : pwg, ## this is how one passes it in the first place
                 'pwg' : pwg,
                 'requests'  : prepids,
                 'notes' : "SUS tranche-1 requests",
-                'chains' : chain,
+                'chains' : [chain],
                 'repetitions' : 1,
                 'block' : 2
               } 
