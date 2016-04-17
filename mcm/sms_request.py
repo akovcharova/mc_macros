@@ -5,13 +5,13 @@ import string
 import time
 sys.path.append('/afs/cern.ch/cms/PPD/PdmV/tools/McM/')
 from rest import *
-from collections import namedtuple
+from dataset_init import *
 
 
 #------------------------------------------------
 #        Options
 #------------------------------------------------
-create_lhe_requests = False 
+create_lhe_requests = False
 update_fs_requests = True
 if (create_lhe_requests and update_fs_requests):
   sys.exit("ERROR: If the LHE request is being created now, then the FastSim request does not exist yet!")
@@ -19,9 +19,9 @@ if (create_lhe_requests and update_fs_requests):
 #------------------------------------------------
 #        Submitter info
 #------------------------------------------------
-author_email = "Ana.Ovcharova@cern.ch"
-author_name = "Ana Ovcharova"
-author_username = "ana"
+author_email = "stefano.casasso@cern.ch"
+author_name = "Stefano Casasso"
+author_username = "scasasso"
 
 #--------------------------------------------------------------
 # New pLHE requests will be created by cloning the request 
@@ -47,70 +47,8 @@ fs_size_event = 230. # size per sim event in kB
 #--------------------------------------------------------------
 #       Fill in per-dataset level info for each request
 #--------------------------------------------------------------
-dataset = namedtuple("dataset","name mcdbid nevt_lhe match_eff qcut notes")
 
-dslist = [
-dataset(name = "SMS-T2tt_mStop-100-125_mLSP-1to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15372, 
-        nevt_lhe = 20000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-150-175_mLSP-1to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15376, 
-        nevt_lhe = 36000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-200_mLSP-1to125_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15375, 
-        nevt_lhe = 24000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-225_mLSP-25to150_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15374, 
-        nevt_lhe = 24000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-250_mLSP-1to175_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15370, 
-        nevt_lhe = 25000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-275_mLSP-75to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15373, 
-        nevt_lhe = 16200000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-300to375_mLSP-1to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15378, 
-        nevt_lhe = 28900000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = "Full tag did not fit in N_chars limit: mStop-300-325-350-375_mLSP-1to225-125to250-1to275-175to300"),
-dataset(name = "SMS-T2tt_mStop-400to475_mLSP-1to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15371, 
-        nevt_lhe = 17000000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = "Full tag did not fit in N_chars limit: mStop-400-425-450-475_mLSP-1to325-225to350-1to375-275to400"),
-dataset(name = "SMS-T2tt_mStop-500-525-550_mLSP-1to425-325to450-1to475_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15377, 
-        nevt_lhe = 13400000, 
-        match_eff = 0.25, 
-        qcut = 57,
-        notes = ""),
-dataset(name = "SMS-T2tt_mStop-600-950_mLSP-1to450_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
-        mcdbid = 15369, 
-        nevt_lhe = 32000000, 
-        match_eff = 0.25, 
-        qcut = 59,
-        notes = "")
-]
+dslist = T1tttt_ext
 
 # ====================================================================================================================
 # For the generic case, nothing should change below this line, but of course there are exceptions so read on... 
@@ -156,7 +94,7 @@ fs_fragment = "import FWCore.ParameterSet.Config as cms\n\
 from Configuration.Generator.Pythia8CommonSettings_cfi import *\n\
 from Configuration.Generator.Pythia8CUEP8M1Settings_cfi import *\n\
 generator = cms.EDFilter(\"Pythia8HadronizerFilter\",\n\
-  maxEventsToPrint = cms.untracked.int32(1),\n\
+  maxEventsToPrint = cms.untracked.int32(100),\n\
   pythiaPylistVerbosity = cms.untracked.int32(1),\n\
   filterEfficiency = cms.untracked.double(1.0),\n\
   pythiaHepMCVerbosity = cms.untracked.bool(False),\n\
@@ -186,12 +124,14 @@ generator = cms.EDFilter(\"Pythia8HadronizerFilter\",\n\
 ProductionFilterSequence = cms.Sequence(generator)\n"
 
 
+
+
 # -------------------------------------------------------------------
 #    OK, now we start actually talking to McM...
 # -------------------------------------------------------------------
 
 print "Connecting to McM..."
-mcm = restful(dev=False) 
+mcm = restful(dev=True) 
 print "done."
 
 for ds in dslist:
@@ -262,5 +202,5 @@ for ds in dslist:
     cmd = "wget https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/"+prepid+" && "
     cmd +="mv "+prepid+" "+prepid+".sh && "
     cmd +="chmod a+x "+prepid+".sh && "
-    cmd +="bsub -q 1nw -J j"+prepid[-3:len(prepid)+1]+" "+prepid+".sh"
+    cmd +="bsub -q 1nd -J j"+prepid[-3:len(prepid)+1]+" "+prepid+".sh"
     os.system(cmd)
