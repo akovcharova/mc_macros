@@ -48,7 +48,7 @@ fs_size_event = 230. # size per sim event in kB
 #       Fill in per-dataset level info for each request
 #--------------------------------------------------------------
 
-dslist = T1tttt_ext
+dslist = T2tt
 
 # ====================================================================================================================
 # For the generic case, nothing should change below this line, but of course there are exceptions so read on... 
