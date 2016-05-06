@@ -24,7 +24,7 @@ ref_fs_dict = mcm.getA('requests',ref_prepid)
 new_fs_dict = mcm.getA('requests',new_prepid)
 
 # Update the new FS request
-new_fs_dict["tags"] = "74Xcopy"
+new_fs_dict["tags"] = ["74Xcopy"]
 new_fs_dict["total_events"] = ref_fs_dict["total_events"]
 new_fs_dict["mcdb_id"] = ref_fs_dict["mcdb_id"]
 new_fs_dict["time_event"] = ref_fs_dict["time_event"]
