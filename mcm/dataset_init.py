@@ -2,6 +2,17 @@ from collections import namedtuple
 
 dataset = namedtuple("dataset","name mcdbid nevt_lhe match_eff qcut notes")
 
+
+# T6bbllslepton
+T6bbllslepton = [
+    dataset(name = "SMS-T6bbllslepton_mSbottom-800To950_mLSP-150To900_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
+            mcdbid = 15580, 
+            nevt_lhe = 11400000, 
+            match_eff = 0.256, 
+            qcut = 70,
+            notes = ""),
+]
+
 # T2tt
 T2tt = [
     dataset(name = "SMS-T2tt_mStop-100-125_mLSP-1to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8",
