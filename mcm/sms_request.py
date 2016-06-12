@@ -13,6 +13,8 @@ from dataset_init import *
 #------------------------------------------------
 create_lhe_requests = False
 update_fs_requests = True
+FSPremixCampaign = 'RunIISpring16FSPremix'
+
 if (create_lhe_requests and update_fs_requests):
   sys.exit("ERROR: If the LHE request is being created now, then the FastSim request does not exist yet!")
 
@@ -48,7 +50,7 @@ fs_size_event = 230. # size per sim event in kB
 #       Fill in per-dataset level info for each request
 #--------------------------------------------------------------
 
-dslist = T2tt
+dslist = T6bbllslepton
 
 # ====================================================================================================================
 # For the generic case, nothing should change below this line, but of course there are exceptions so read on... 
@@ -169,7 +171,7 @@ for ds in dslist:
     fs_dict = {}
     found = False
     for r in reqs:    
-      if r['member_of_campaign']=='RunIISpring15FSPremix': 
+      if r['member_of_campaign']==FSPremixCampaign: 
         if found:
           sys.exit("*** ERROR: %s: Found multiple FastSim requests for this dataset name" %(ds.name))
         else:
