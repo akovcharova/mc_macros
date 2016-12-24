@@ -5,7 +5,7 @@
 # [] source /afs/cern.ch/cms/PPD/PdmV/tools/McM/getCookie.sh
 # 2. Setup any CMSSW release (needed for python utils)
 # 3. Download script:
-# [] 
+# [] wget https://raw.githubusercontent.com/trandbea/mc_macros/master/mcm/bookkeep.py
 # 4. Run script:
 # [] python bookkeep.py
 
