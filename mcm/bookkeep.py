@@ -97,7 +97,16 @@ def preq(req,comment=''):
   tot = req['total_events'] 
   cmpl = req['completed_events']
   pct_done = float(cmpl)/float(tot)*100. 
-  if pct_done<0: pct_done = 0
+  if pct_done<0: 
+    qry='dataset_name='+req['dataset_name']+'*&extension='+str(req['extension'])+'&member_of_campaign=RunIISummer15*GS*'
+    req_gs = mcm.getA('requests',query=qry)
+    for igs in req_gs: 
+      for ich_gs in igs['member_of_chain']:
+        if "RunIISummer16PremixMini" in ich_gs:
+          for ich_req in req['member_of_chain']:
+            if ich_req == ich_gs:
+              pct_done = float(cmpl)/float(igs['completed_events'])*100.
+              tot = igs['completed_events']
   type = 'None'
   if ('MiniAOD' in req['member_of_campaign']): type = 'MiniAOD '
   elif ('DR80' in req['member_of_campaign']): type = 'DIG-REC '
@@ -106,7 +115,7 @@ def preq(req,comment=''):
   cols += '{:<72}'.format(req['dataset_name'][0:68])
   cols += type+'{:<15}'.format(req['status'])
   cols += '{:>12.0f}'.format(pct_done)
-  cols += '{:>12,}'.format(req['total_events'])
+  cols += '{:>15,}'.format(tot)
   cols += '  '+comment
   return cols
 
@@ -119,7 +128,7 @@ cols = '{:<10}'.format('Extension')
 cols += '{:<72}'.format('Dataset name')
 cols += '{:<23}'.format('Latest status')
 cols += '{:>12}'.format('Completed [%]')
-cols += '{:>12}'.format('# Events')
+cols += '{:>15}'.format('# Events')
 print cols
 
 for ds in datasets.keys():
